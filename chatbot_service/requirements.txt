@@ -1,0 +1,22 @@
+fastapi==0.104.1
+uvicorn==0.24.0
+
+# Transformers + PhoBERT
+transformers==4.35.0
+sentencepiece==0.1.99
+
+# Torch phù hợp với Python 3.12
+torch==2.2.0
+
+# Vector DB
+chromadb==0.4.15
+
+# Utils
+pymysql==1.1.0
+python-dotenv==1.0.0
+numpy==1.26.4
+requests==2.31.0
+
+# LangChain
+langchain==0.0.350
+langchain-community==0.0.10

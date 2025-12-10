@@ -1,0 +1,206 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
+}
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  productName String
+  imgUrl      String?
+  price       Decimal
+  shortDesc   String?
+  description String?
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  avgRating  Float       @default(0)
+  reviews    Review[]
+  orderItems OrderItem[] 
+  wishlists  Wishlist[]
+  cartItems  CartItem[] 
+  comments  Comment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("products")
+}
+
+model Review {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  userName  String
+  rating    Int
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?
+  address   String?
+  avatar    String?
+  role      String   @default("user")
+  provider  String?
+  googleId  String?  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orders   Order[]
+  wishlist Wishlist[]
+  reviews  Review[]
+  addresses Address[] 
+  comments  Comment[]     // 👈 thêm dòng này
+  cart       Cart?           // <--- Thêm dòng này (1 user có 1 cart)
+  chatMessages ChatMessage[] // Chat messages của user
+}
+
+
+
+model Wishlist {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, productId])
+}
+
+
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String
+  fullName  String
+  phone     String
+  province  String
+  district  String
+  ward      String
+  detail    String
+  isDefault Boolean @default(false) // Add default value here
+  user      User     @relation(fields: [userId], references: [id])
+  orders    Order[]
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  userId        String
+  status        String   // pending, paid, shipping, completed, cancelled
+  totalAmount   Float
+  shippingAddress Address @relation(fields: [addressId], references: [id])
+  addressId     String
+  paymentMethod String   // cod, vnpay
+  items         OrderItem[]
+  user          User     @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  productId Int
+  quantity  Int
+  price     Float
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Voucher {
+  id            String   @id @default(uuid())
+  code          String   @unique
+  discountType  String   // percentage, fixed
+  value         Float
+  minAmount     Float?
+  expirationDate DateTime
+  isActive      Boolean  @default(true)
+
+}
+model Cart {
+  id        Int      @id @default(autoincrement())
+   userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  items     CartItem[]
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  cartId    Int
+  productId Int
+  quantity  Int      @default(1)
+
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  // Nếu muốn truy xuất user trực tiếp từ CartItem, có thể thêm:
+  // cartUser   User   @relation(fields: [userId], references: [id])
+  @@unique([cartId, productId])
+}
+model Store {
+  id        Int      @id @default(autoincrement())
+  name      String
+  address   String
+  city      String
+  district  String
+  ward      String
+  phone     String
+  openTime  String
+  closeTime String
+  latitude  Float
+  longitude Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement()) // Vì cột id trong DB là int AI
+  text      String   // đổi từ `content` sang `text` để đúng với DB
+  productId Int
+  userId    String?
+  parentId  Int?      // có trong DB
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product   Product   @relation(fields: [productId], references: [id])
+  user      User?     @relation(fields: [userId], references: [id])
+}
+
+model ChatMessage {
+  id             String   @id @default(uuid())
+  userId         String?
+  message        String
+  response       String
+  sources        String?  // JSON string chứa sources từ RAG
+  conversationId String   @default(uuid())
+  createdAt      DateTime @default(now())
+  
+  user           User?    @relation(fields: [userId], references: [id])
+  
+  @@map("chat_messages")
+}

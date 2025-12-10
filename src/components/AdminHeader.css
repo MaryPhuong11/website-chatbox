@@ -1,0 +1,45 @@
+.admin-header {
+    background-color: #222;
+    color: white;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .admin-header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .admin-nav {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .admin-nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .admin-nav a:hover {
+    color: #00c6ff;
+  }
+  
+  .admin-nav button {
+    background: transparent;
+    border: 1px solid #fff;
+    color: white;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+  
+  .admin-nav button:hover {
+    background-color: #fff;
+    color: #222;
+  }
+  

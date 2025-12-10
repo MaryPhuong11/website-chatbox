@@ -1,0 +1,146 @@
+.categories-table {
+  overflow-x: auto;
+  margin-top: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.categories-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.categories-table th {
+  background: #f8f9fa;
+  color: #2c3e50;
+  font-weight: 600;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 2px solid #e1e1e1;
+  white-space: nowrap;
+}
+
+.categories-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e1e1e1;
+  vertical-align: middle;
+}
+
+.categories-table tr:hover {
+  background: #f8f9fa;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  min-width: 100px;
+}
+
+.btn-icon {
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  color: white;
+}
+
+.btn-icon.edit {
+  background: #3498db;
+}
+
+.btn-icon.edit:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-delete {
+  width: 35px;
+  height: 35px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 16px;
+  color: white;
+  background: #e74c3c;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon svg,
+.btn-delete svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+  color: white;
+}
+
+.no-data {
+  text-align: center;
+  padding: 30px;
+  color: #95a5a6;
+  font-style: italic;
+}
+
+/* Column widths */
+.categories-table th:nth-child(1), /* ID */
+.categories-table td:nth-child(1) {
+  width: 80px;
+}
+
+.categories-table th:nth-child(2), /* Name */
+.categories-table td:nth-child(2) {
+  width: 300px;
+}
+
+.categories-table th:nth-child(3), /* Actions */
+.categories-table td:nth-child(3) {
+  width: 120px;
+}
+
+@media (max-width: 768px) {
+  .categories-table {
+    margin-top: 15px;
+  }
+
+  .categories-table th,
+  .categories-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .action-buttons {
+    gap: 5px;
+  }
+
+  .btn-icon,
+  .btn-delete {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .btn-icon svg,
+  .btn-delete svg {
+    width: 14px;
+    height: 14px;
+  }
+} 
